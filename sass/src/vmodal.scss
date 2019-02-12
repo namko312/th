@@ -1,0 +1,19 @@
+.vmodal-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  .vmodal-body {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 15px;
+    width: fit-content;
+    margin: auto;
+  }
+}

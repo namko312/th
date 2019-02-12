@@ -1,0 +1,14 @@
+<% layout('../layouts/layout_brand_user.ejs') %>
+<%- partial ('../common/vue_base.ejs') %>
+<div id="app" class="ibody">
+    <div class="container-fluid mt-5">
+        <list-user-item :users="users"></list-user-item>
+        <infinite-loading @infinite="infiniteHandler">
+            <span slot="no-more"><i class="fa fa-star"></i></span>
+        </infinite-loading>
+    </div>
+</div>
+
+
+<script src="/js_vue/common/component_list_user_item.js"></script>
+<script src="/js_vue/page/homepage.js"> </script>

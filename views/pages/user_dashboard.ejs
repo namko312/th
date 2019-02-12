@@ -1,0 +1,50 @@
+<% layout('../layouts/layout_brand_user.ejs') %>
+<div class="container ibody">
+    <h2 class="text-center">
+        Welcome <%- user.username%>
+    </h2>
+    <div class="card">
+        <h5 class="card-header">Thông tin tài khoản Quảng Cáo</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    Loại tài khoản: <span class="text-white badge badge-purple">Dành cho <%- user.type%></span>
+                </div>
+                <div class="col">
+                    Hết hạn tk quảng cáo: <%- user.outdate%>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    Tổng lượt xem quảng cáo: <span class="text-white badge badge-info"><%- user.totalView%> lượt</span>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div>
+                        Trạng thái xét duyệt:
+                        <%if (user.check && !user.block) { %>
+                        <span class="badge badge-warning">Đang xét duyệt</span>
+                        <small>(Quản trị viên sẽ xem xét trang của bạn có phù hợp với điều khoản hay không)</small>
+                        <% } %>
+                        <%if (user.block) { %>
+                        <span class="text-white badge badge-danger">Bị từ chối</span>
+                        <small>(Trang của bạn đã bị từ chối vui lòng sửa lại theo phản hồi)</small>
+                        <% } %>
+                        <%if (!user.check && !user.block) { %>
+                        <span class="text-white badge badge-success">Thành công</span>
+                        <small>(Trang của sẽ xuất hiện trên trang chủ và quảng cáo nếu vẫn còn hạn hợp đồng)</small>
+                        <% } %>
+                    </div>
+                    <%if (user.block) { %>
+                    <div>
+                        Phản hồi từ phía quản trị viên:
+                        <pre><%- user.blockDescription%></pre>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <a class="text-white btn btn-primary" href="/dashboard/edit">Chỉnh sửa trang</a>
+        </div>
+    </div>
+</div>

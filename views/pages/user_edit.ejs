@@ -1,0 +1,82 @@
+<% layout('../layouts/layout_brand_user.ejs') %>
+<%- partial ('../common/vue_base.ejs') %>
+<%- partial ('../common/wysiwyg.ejs') %>
+<%- partial ('../common/cropper.ejs') %>
+<div id="app-edit" class="mb-5 ibody">
+    <div v-if="user">
+        <div class="group-button-menu-edit">
+            <div class="d-flex justify-content-around">
+                <button class="btn btn-primary btn-lg" @click="updatePreview()">Xem trước</button>
+                <button class="btn btn-success btn-lg" @click="saveProfile()">Cập nhật và xét duyệt</button>
+            </div>
+        </div>
+        <div class="container pb-5">
+            <h3><span class="badge badge-primary">Thay đổi phía Nhà Quảng Cáo</span></h3>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Logo</label>
+                    <cropper :src="user.f_logo ? user.f_logo : config.logo_default" v-model="user.f_logo" imagewidth="150px" imageheight="150px" fontsize="22px" maxwidthheight="600"></cropper>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Favicon</label>
+                    <cropper :src="user.f_favicon ? user.f_favicon : config.favicon_default" v-model="user.f_favicon" imagewidth="100px" imageheight="100px" fontsize="18px" maxwidthheight="600"></cropper>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Bìa</label>
+                    <cropper :src="user.f_cover ? user.f_cover : config.cover_default" v-model="user.f_cover" imagewidth="160px" imageheight="59px" fontsize="18px" maxwidthheight="2553" ratio="2.7"></cropper>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Tiêu đề trang</label>
+                    <b-form-input size="sm" v-model="user.f_title" type="text" placeholder="Tiêu đề trang"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Mô tả dịch vụ</label>
+                    <b-form-textarea v-model="user.f_description" placeholder="Mô tả dịch vụ" :rows="5":max-rows="10"></b-form-textarea>
+                </b-col>
+            </b-row>
+            <b-row class="mt-3">
+                <b-col>
+                    <label class="font-weight-bold">Email</label>
+                    <b-form-input size="sm" v-model="user.f_email" type="text" placeholder="Email"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Zalo</label>
+                    <b-form-input size="sm" v-model="user.f_zalo" type="text" placeholder="Zalo"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Facebook</label>
+                    <b-form-input size="sm" v-model="user.f_facebook" type="text" placeholder="Facebook"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mt-3">
+                <b-col>
+                    <label class="font-weight-bold">Số điện thoại</label>
+                    <b-form-input size="sm" v-model="user.f_phone" type="text" placeholder="Số điện thoại"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Địa chỉ</label>
+                    <b-form-input size="sm" v-model="user.f_address" type="text" placeholder="Địa chỉ"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Website</label>
+                    <b-form-input size="sm" v-model="user.f_website" type="text" placeholder="Website"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mt-5">
+                <b-col>
+                    <label class="font-weight-bold">Nội dung</label>
+                    <editor :content="user.f_html" v-model="user.f_html" viewhtml="true" :uidupload="user.id"></editor>
+                </b-col>
+            </b-row>
+        </div>
+        <loading fixed="true" :show="show.loading"></loading>
+    </div>
+</div>
+<script src="/js_vue/common/component_editor.js"></script>
+<script src="/js_vue/common/component_cropper.js"></script>
+<script src="/js_vue/common/component_loading.js"></script>
+<script src="/js_vue/page/user_edit.js"></script>

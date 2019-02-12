@@ -1,0 +1,27 @@
+body {
+  background-color: #F5F5F5 !important;
+  //background-repeat: no-repeat;
+  //background-size: cover;
+}
+.theme-html {
+  background-image: url('https://4.bp.blogspot.com/-91aRgPFJDNA/W_bJzxz30hI/AAAAAAAABWk/H1NiFxsWmhQfo-cZrGLxOR-aplfoFeREgCLcBGAs/s1600/oa%25CC%2589nge-background.jpg') !important;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 50vh;
+  img {
+    width: 100% !important;
+  }
+  .container > div {
+    background-color: rgba(245, 245, 245, 0.98) !important;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    tr {
+      display: flex;
+      td {
+        flex: 1;
+        padding: 0px;
+        border: none;
+      }
+    }
+  }
+}

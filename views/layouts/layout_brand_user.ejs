@@ -1,0 +1,44 @@
+<% layout('layout.ejs') %>
+<div class="ilayout-brand-user">
+    <div class="iheader-bar-wrap">
+        <div class="d-flex justify-content-between">
+            <div class="ml-2">
+                <a class="btn btn-sm btn-light" href="/">Home</a>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-yellow" href="/introduce">Rebrand là gì ?</a>
+            </div>
+            <div class="mr-2">
+                <% if ( typeof passport == 'undefined' || typeof passport.user == 'undefined'|| typeof passport.role != 'undefined' ||  passport.user.role != 'user') { %>
+                <div class="btn-group" role="group">
+                    <a href="/brand/login" class="btn btn-sm btn-primary">Đăng nhập</a>
+                    <button class="btn btn-sm btn-gradient-v1">Đăng kí</button>
+                </div>
+                <%} else {%>
+                    <% if( typeof passport.user.username != 'undefined') {%>
+                        <div class="btn-group" role="group">
+                            <a href="/dashboard" class="btn btn-sm btn-light"><%- passport.user.username%></a>
+                            <a href="/shop/<%-passport.user.username%>" class="btn btn-sm btn-primary">My website</a>
+                            <a href="/logout" class="btn btn-sm btn-gradient-v1">Đăng xuất</a>
+                        </div>
+                    <%}%>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <div class="ibody-wrap <% if( typeof noFooter == 'undefined' || noFooter == false) {%>with-footer<% } %>">
+        <%- body%>
+    </div>
+    <% if( typeof noFooter == 'undefined' || noFooter == false) {%>
+    <div class="ifooter-wrap">
+        <div class="d-flex justify-content-center">
+            <div>
+                <a href="https://shopeelike.cf" target="_blank" class="link">ShopeeLike</a>
+                <a href="https://shopeelike.cf/#shopeelikeplus" target="_blank" class="link">Apps</a>
+                <a href="/introduce" target="_blank" class="link">Giới thiệu</a>
+                <a href="/policy" target="_blank" class="link">Điều khoản</a>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>

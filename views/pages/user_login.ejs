@@ -1,0 +1,57 @@
+<% layout('../layouts/layout_brand_user.ejs') %>
+<%- partial ('../common/vue_base.ejs') %>
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div id="login-user-app">
+        <div>
+            <h1 class="logo-name">B+</h1>
+        </div>
+        <h4>Tài khoản Thương Hiệu</h4>
+        <p>Đăng nhập để vào trang quản lý</p>
+        <div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Username" v-model="username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" v-model="password">
+            </div>
+            <button @click="login()" class="btn btn-primary btn-block">Đăng nhập</button>
+        </div>
+    </div>
+</div>
+<script>
+  new Vue({
+    el: '#login-user-app',
+    components: {
+      vuejsDatepicker
+    },
+    data: {
+      username: '',
+      password: ''
+    },
+    methods: {
+      login: function () {
+        if(this.username.length < 6 || this.password.length < 6) {
+          this.showErr('Username hoặc password không đúng')
+        }
+        axios.post('/brand/login/local' ,{username: this.username, password: this.password})
+          .then((response) => {
+            if(response.data) {
+              if(response.data.success) {
+                window.location.href = "/dashboard"
+              } else {
+                this.showErr('Username hoặc password không đúng')
+              }
+            }
+          })
+          .catch((error) => {
+            this.showErr('Lỗi kết nối, vui lòng kiểm tra lại mạng internet!')
+          })
+      },
+      showErr: function (msg) {
+        utils.alert({title:'Không thể đăng nhập',msg:msg , okText:'OK', callback:()=>{
+            this.password = ''
+        }})
+      }
+    }
+  })
+</script>

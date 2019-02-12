@@ -1,0 +1,106 @@
+<% layout('../layouts/layout_feature.ejs') %>
+<%- partial ('../common/vue_base.ejs') %>
+<div id="app">
+    <div class="container-fluid mt-2">
+        <h6>
+            <b-modal v-model="show.modalCreateUser" title="Tạo tài khoản Brand">
+                <div>
+                    <label>Username</label>
+                    <b-form-input v-model.trim="newUser.username" type="text" placeholder="Username"></b-form-input>
+                    <b-form-text v-if="newUser_username_dirty && !newUser_username_valid">
+                        Username phải chứa 6 đến 20 kí tự, không chứa kí tự đặc biệt
+                    </b-form-text>
+                    <label>Password</label>
+                    <b-form-input v-model.trim="newUser.password" type="text"  placeholder="Password"></b-form-input>
+                    <b-form-text v-if="newUser_password_dirty && !newUser_password_valid">
+                        Password phải chứa 6 đến 20 kí tự, không chứa kí tự đặc biệt
+                    </b-form-text>
+                    <b-form-group label="Quyền xét duyệt">
+                        <b-form-radio-group v-model="newUser.notNeedCheck" name="radioSubComponent">
+                            <b-form-radio value="0">Bình thường</b-form-radio>
+                            <b-form-radio value="1">Không cần quyền xét duyệt</b-form-radio>
+                        </b-form-radio-group>
+                    </b-form-group>
+                    <b-form-group label="Loại tài khoản">
+                        <b-form-radio-group v-model="newUser.type" name="radioSubComponent2">
+                            <b-form-radio value="producer">Nhà sản xuất</b-form-radio>
+                            <b-form-radio value="business">Nhà bán buôn</b-form-radio>
+                        </b-form-radio-group>
+                    </b-form-group>
+                    <b-form-textarea
+                            v-model.trim="newUser.adminDescription"
+                            placeholder="Mô tả về khách hàng"
+                            :rows="3"
+                            :max-rows="6">
+                    </b-form-textarea>
+                </div>
+                <div slot="modal-footer" class="w-100">
+                    <b-btn size="sm" variant="primary" @click="saveNewUser()" v-if="show.buttonCreateUser">Lưu</b-btn>
+                    <b-btn size="sm" class="float-right" variant="secondary" @click="show.modalCreateUser=false">Huỷ</b-btn>
+                </div>
+            </b-modal>
+            <button  class="btn btn-purple" @click="openModalCreateUser()">Tạo mới tài khoản</button>
+            <span>{{listUser.length}}/{{count}} tài khoản <button class="btn btn-sm btn-circle btn-gradient-v1" @click="reload()"><i class="fa fa-repeat"></i></button> </span>
+        </h6>
+        <b-row class="mb-3">
+            <b-col>
+                <div class="btn-group bg-white" role="group">
+                    <button class="btn" :class="{ 'btn-primary': filter.all, 'btn-outline-primary': !filter.all  }" @click="runFilter('all')">Tất cả</button>
+                    <button class="btn" :class="{ 'btn-success': filter.active, 'btn-outline-success': !filter.active  }" @click="runFilter('active')">Active</button>
+                    <button class="btn" :class="{ 'btn-warning': filter.choxetduyet, 'btn-outline-warning': !filter.choxetduyet  }" @click="runFilter('choxetduyet')">Chờ xét duyệt</button>
+                    <button class="btn" :class="{ 'btn-danger': filter.khongxetduyet, 'btn-outline-danger': !filter.khongxetduyet  }" @click="runFilter('khongxetduyet')">Không xét duyệt</button>
+                    <button class="btn" :class="{ 'btn-secondary': filter.expired, 'btn-outline-secondary': !filter.expired  }" @click="runFilter('expired')">Hết hạn</button>
+                </div>
+            </b-col>
+            <b-col>
+                <b-input-group prepend="Search">
+                    <b-form-input placeholder="Username" v-model="pagging.search.username"></b-form-input>
+                </b-input-group>
+            </b-col>
+        </b-row>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Mô tả KH</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Hết hạn</th>
+                    <th scope="col">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(user, index) in listUser">
+                    <td>{{index + 1}}</td>
+                    <td><a target="_blank" :href="'/user?username=' + user.username">{{user.username}}</a> </td>
+                    <td>{{user.password}}</td>
+                    <td>
+                        <div v-b-tooltip.click :title="user.adminDescription">{{user.adminDescription | admin_description}}</div>
+                    </td>
+                    <td>
+                        <span class="badge badge-secondary" v-if="!checkIsActiveDate(user.outdate)">Hết hạn</span>
+                        <span v-else>
+                            <span v-if="!user.check && !user.block" class="badge badge-success">Đã Active</span>
+                        </span>
+                        <span v-if="user.check" class="badge badge-warning">Chờ xét duyệt</span>
+                        <span v-if="user.block" class="badge badge-danger">Không xét duyệt</span>
+                    </td>
+                    <td>
+                        {{user.outdate | dateformat}}
+                    </td>
+                    <td>
+                        <div class="btn-group bg-white" role="group">
+                            <a target="_blank" :href="'/admin/manager/user/edit/' + user.username + '?id=' + user.id" class="btn btn-primary btn-sm">Sửa</a>
+                            <a target="_blank" :href="'/shop/' + user.username" class="btn btn-gradient-v1 btn-sm">Xem Shop</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <infinite-loading @infinite="infiniteHandler" :identifier="IDload"></infinite-loading>
+    </div>
+</div>
+<script src="/js_vue/common/base_vue.js"></script>
+<script src="/js_vue/page/admin_manager_user.js"></script>

@@ -1,0 +1,78 @@
+<% layout('../layouts/layout_brand_user.ejs') %>
+<div class="theme-shop" style="background: url('<%- user.f_cover%>')">
+    <div class="container">
+        <div class="ishop-wrap">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div>
+                        <div class="text-center">
+                            <% if (user.type == 'business') {%>
+                            <span class="badge btn-gradient-v1">Nhà bán buôn</span>
+                            <% } %>
+                            <% if (user.type == 'producer') {%>
+                            <span class="badge btn-gradient-v2">Nhà sản xuất</span>
+                            <% } %>
+                        </div>
+                        <div class="ishop-logo-wrap">
+                            <img class="ishop-logo" src="<%- user.f_logo ? user.f_logo : '/images/logo_default.png'%>" alt="<%- user.f_title%>" />
+                        </div>
+                        <h4 class="ishop-title mt-3"><%- user.f_title%></h4>
+                        <table class="m-auto">
+                            <% if (user.f_zalo != '') {%>
+                            <tr>
+                                <td><span class="ishop-title-f zalo">Zalo</span></td>
+                                <td><span><%- user.f_zalo%></span></td>
+                            </tr>
+                            <% } %>
+
+                            <% if (user.f_phone != '') {%>
+                            <tr>
+                                <td><span class="ishop-title-f phone"><i class="fa fa-phone" aria-hidden="true"></i></span></td>
+                                <td><span><%- user.f_phone%></span></td>
+                            </tr>
+                            <% } %>
+
+                            <% if (user.f_email != '') {%>
+                            <tr>
+                                <td><span class="ishop-title-f email"><i class="fa fa-envelope-o" aria-hidden="true"></i></span></td>
+                                <td><span><%- user.f_email%></span></td>
+                            </tr>
+                            <% } %>
+
+                            <% if (user.f_facebook != '') {%>
+                            <tr>
+                                <td><span class="ishop-title-f facebook"><i class="fa fa-facebook" aria-hidden="true"></i></span></td>
+                                <td><a target="_blank" href="<%- user.f_facebook%>"><%- user.f_facebook%></a></td>
+                            </tr>
+                            <% } %>
+
+                            <% if (user.f_website != '') {%>
+                            <tr>
+                                <td><span class="ishop-title-f website"><i class="fa fa-globe" aria-hidden="true"></i></span></td>
+                                <td><a target="_blank" href="<%- user.f_website%>"><%- user.f_website%></a></td>
+                            </tr>
+                            <% } %>
+
+                            <% if (user.f_address != '') {%>
+                            <tr>
+                                <td><i class="fa fa-map-marker" aria-hidden="true"></i></td>
+                                <td><span><%- user.f_address%></span></td>
+                            </tr>
+                            <% } %>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-7 pt-3">
+                    <div class="ishop-description"><%- user.f_description%></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="theme-html">
+    <div class="container">
+        <div>
+            <%-user.f_html%>
+        </div>
+    </div>
+</div>

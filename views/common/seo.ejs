@@ -1,0 +1,14 @@
+<title>
+    <% if ( typeof title != 'undefined' ) { %>
+    <%-title%>
+    <% } else { %>
+    Thương hiệu
+    <%} %>
+</title>
+<!--Favicon-->
+<% if ( typeof favicon != 'undefined' ) { %>
+    <link rel="icon" type="image/png" href="<%- favicon%>">
+<% } else { %>
+    <link rel="icon" type="image/png" href="/images/favicon_default.png">
+<%} %>
+<!--END-->

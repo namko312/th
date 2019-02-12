@@ -1,0 +1,31 @@
+<% layout('../layouts/layout_brand_user.ejs') %>
+<div class="kiemduyet-wrapper">
+    <div class="thongbao">
+        <% if ( user.hethan ) { %>
+            <img class="thongbao-img" src="/images/cat_notfound.gif">
+        <%  } else { %>
+            <img class="thongbao-img" src="/images/kiemduyet.gif">
+        <% }%>
+
+        <div class="mt-2">
+            <% if ( user.hethan ) { %>
+            <p>Trang này không thể hiển thị với bạn do nhà sản xuất <strong><%- user.username%></strong> đã hết hạn hợp đồng với chúng mình</p>
+            <p>Vui lòng truy cập lại sau!</p>
+            <%  } else { %>
+            <p>Chúng mình đang kiểm duyệt lại nội dung của nhà sản xuất <strong><%- user.username%></strong> để cung cấp cho bạn thông tin chính xác nhất</p>
+            <p>Rất nhanh thôi ! Website này sẽ được xuất hiện với bạn</p>
+            <p><small>Mẹo: Hãy thử lại sau ít nhất một vài giờ</small></p>
+            <% }%>
+        </div>
+    </div>
+
+</div>
+<% if ( user.hethan ) { %>
+    <style>
+        .kiemduyet-wrapper {background: #fff;}
+    </style>
+<%  } else { %>
+    <style>
+        .kiemduyet-wrapper {background: #E3E3E3;}
+    </style>
+<% }%>

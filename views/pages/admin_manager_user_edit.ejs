@@ -1,0 +1,146 @@
+<% layout('../layouts/layout_feature.ejs') %>
+<%- partial ('../common/vue_base.ejs') %>
+<%- partial ('../common/wysiwyg.ejs') %>
+<%- partial ('../common/cropper.ejs') %>
+<div id="app-edit" class="mb-5">
+    <div v-if="user">
+        <div class="group-button-menu-edit">
+            <div class="d-flex justify-content-around">
+                <button class="btn btn-primary btn-lg" @click="updatePreview()">Xem trước</button>
+                <div>
+                    <span class="badge badge-secondary" v-if="!checkIsActiveDate(user.outdate)">Hết hạn</span>
+                    <span v-else>
+                            <span v-if="!user.check && !user.block" class="badge badge-success">Đã Active</span>
+                        </span>
+                    <span v-if="user.check" class="badge badge-warning">Chờ xét duyệt</span>
+                    <span v-if="user.block" class="badge badge-danger">Không xét duyệt</span>
+                </div>
+                <button class="btn btn-success btn-lg" @click="saveProfile()">Cập nhật</button>
+            </div>
+        </div>
+        <div class="container">
+            <h3><span class="badge badge-primary">Thay đổi phía Admin</span></h3>
+            <b-row>
+                <b-col>
+                    <div class="badge text-white badge-teal" v-if="user.type=='producer'" @click="user.type='business'">Nhà sản xuất</div>
+                    <div class="badge text-white badge-purple" v-if="user.type=='business'" @click="user.type='producer'">Nhà bán buôn</div>
+                </b-col>
+                <b-col>
+                    <div class="badge badge-danger" v-if="user.block" @click="user.block=false">Deactive</div>
+                    <div class="badge badge-success" v-if="!user.block" @click="user.block=true">Active</div>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2" v-if="user.block">
+                <b-col>
+                    <b-form-textarea size="sm" v-model="user.blockDescription" placeholder="Lý do khoá tài khoản" :rows="2":max-rows="2"></b-form-textarea>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Username</label>
+                    <b-form-input size="sm" v-model="user.username" type="text" placeholder="Username" disabled></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Password</label>
+                    <b-form-input size="sm" v-model="user.password" type="text" placeholder="Password"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2">
+                <b-col>
+                    <b-form-textarea v-model="user.adminDescription" placeholder="Thông tin khách hàng" :rows="6":max-rows="10"></b-form-textarea>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Quyền ưu tiên</label>
+                    <b-form-radio-group v-model="user.notNeedCheck" name="radioSubComponent">
+                        <b-form-radio :value="false">Bình thường</b-form-radio>
+                        <b-form-radio :value="true">Không cần quyền xét duyệt</b-form-radio>
+                    </b-form-radio-group>
+                </b-col>
+                <b-col v-if="!user.notNeedCheck">
+                    <label class="font-weight-bold">Chờ xét duyệt</label>
+                    <div>
+                        <div class="btn btn-danger btn-sm dim" v-if="user.check" @click="user.check=false"><i class="fa fa-bell fa-2x"></i></div>
+                        <div class="btn btn-success btn-sm dim" v-if="!user.check" @click="user.check=true"><i class="fa fa-check fa-2x"></i></div>
+                    </div>
+                </b-col>
+            </b-row><b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Ngày hết hạn</label>
+                    <vuejs-datepicker v-model="outdate"></vuejs-datepicker>
+                </b-col>
+            </b-row>
+
+        </div>
+        <hr class="mt-5 mb-5">
+        <div class="container pb-5">
+            <h3><span class="badge badge-primary">Thay đổi phía Nhà Quảng Cáo</span></h3>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Logo</label>
+                    <cropper :src="user.f_logo ? user.f_logo : config.logo_default" v-model="user.f_logo" imagewidth="150px" imageheight="150px" fontsize="22px" maxwidthheight="600"></cropper>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Favicon</label>
+                    <cropper :src="user.f_favicon ? user.f_favicon : config.favicon_default" v-model="user.f_favicon" imagewidth="100px" imageheight="100px" fontsize="18px" maxwidthheight="600"></cropper>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Bìa</label>
+                    <cropper :src="user.f_cover ? user.f_cover : config.cover_default" v-model="user.f_cover" imagewidth="160px" imageheight="59px" fontsize="18px" maxwidthheight="2553" ratio="2.7"></cropper>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Tiêu đề trang</label>
+                    <b-form-input size="sm" v-model="user.f_title" type="text" placeholder="Tiêu đề trang"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mt-2">
+                <b-col>
+                    <label class="font-weight-bold">Mô tả dịch vụ</label>
+                    <editor :content="user.f_description" v-model="user.f_description"  onlytext="true"></editor>
+                </b-col>
+            </b-row>
+            <b-row class="mt-3">
+                <b-col>
+                    <label class="font-weight-bold">Email</label>
+                    <b-form-input size="sm" v-model="user.f_email" type="text" placeholder="Email"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Zalo</label>
+                    <b-form-input size="sm" v-model="user.f_zalo" type="text" placeholder="Zalo"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Facebook</label>
+                    <b-form-input size="sm" v-model="user.f_facebook" type="text" placeholder="Facebook"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mt-3">
+                <b-col>
+                    <label class="font-weight-bold">Số điện thoại</label>
+                    <b-form-input size="sm" v-model="user.f_phone" type="text" placeholder="Số điện thoại"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Địa chỉ</label>
+                    <b-form-input size="sm" v-model="user.f_address" type="text" placeholder="Địa chỉ"></b-form-input>
+                </b-col>
+                <b-col>
+                    <label class="font-weight-bold">Website</label>
+                    <b-form-input size="sm" v-model="user.f_website" type="text" placeholder="Website"></b-form-input>
+                </b-col>
+            </b-row>
+            <b-row class="mt-5">
+                <b-col>
+                    <label class="font-weight-bold">Nội dung</label>
+                    <editor :content="user.f_html" v-model="user.f_html" viewhtml="true" :uidupload="user.id" for="admin"></editor>
+                </b-col>
+            </b-row>
+        </div>
+        <loading fixed="true" :show="show.loading"></loading>
+    </div>
+</div>
+<script src="/js_vue/common/component_editor.js"></script>
+<script src="/js_vue/common/component_cropper.js"></script>
+<script src="/js_vue/common/component_loading.js"></script>
+<script src="/js_vue/page/admin_manager_user_edit.js"></script>

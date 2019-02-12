@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo+Thambi');
+.ilayout-brand-user {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  .iheader-bar-wrap {
+    background: linear-gradient(to left, #fcb045, #fd1d1d)!important;
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
+    display: flex;
+    -ms-flex-align: center!important;
+    align-items: center!important;
+    > div {
+      width: 100%;
+    }
+  }
+  .ibody-wrap {
+    margin-top: 50px;
+    &.with-footer {
+      padding-bottom: 170px;
+    }
+    .ibody {
+      margin-top: 80px
+    }
+  }
+  .ifooter-wrap {
+    width: 100%;
+    height: 170px;
+    display: flex;
+    background: #fff;
+    -ms-flex-align: center!important;
+    align-items: center!important;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    > div {
+      width: 100%;
+      font-family: 'Baloo Thambi', cursive;
+      .link {
+        color: #6F6F6F;
+        font-size: 14px;
+        margin: 0 7.5px;
+      }
+    }
+  }
+}
