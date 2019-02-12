@@ -5,10 +5,12 @@ const storage = new Storage({
   keyFilename: __dirname + "/serviceAccountKey.json"
 })
 const bucket = storage.bucket("gs://thuonghieu-2ff3b.appspot.com/")
+const envDev = false
 module.exports = {
   //upload duoi dang base 64
   uploadImage: function (base64, filename) {
     return new Promise( (fullfill, reject) => {
+      if(envDev) filename = '/test' + filename
       var ex = base64.substring("data:image/".length, base64.indexOf(";base64"))
       if(ex != 'gif' && ex != 'png' && ex != 'jpeg') {
         return reject('f_favicon invalid upload')
@@ -35,6 +37,7 @@ module.exports = {
   //upload duoi dang file
   uploadImageFile: function (req, filename) {
     return new Promise( (fullfill, reject) => {
+      if(envDev) filename = '/test' + filename
       if(!req.files['image']) return reject('File not found')
       if(!req.files['image'][0]) return reject('File not found')
       var image = req.files['image'][0]
