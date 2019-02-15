@@ -55,7 +55,7 @@ module.exports.datastores = {
   mongoStore: {
     adapter: require('sails-mongo'),
     //url: 'mongodb://localhost:27017/thuonghieu',
-    url: 'mongodb://user:password@localhost:27017/thuonghieu',
+    url: 'mongodb://thiendia:bananhduc@localhost:27017/thuonghieu',
   }
 
 };
