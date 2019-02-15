@@ -10,9 +10,9 @@
  */
 
 module.exports.bootstrap = async function(done) {
-  Admin.create({email:'thiendia', password:'bananhduc'}).then(function(admin){
-    return done();
-  })
-  return done();
+  // Admin.create({email:'thiendia', password:'bananhduc'}).then(function(admin){
+  //   return done()
+  // })
+  return done()
 
-};
+}
