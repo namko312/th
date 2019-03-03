@@ -63,7 +63,10 @@ module.exports.routes = {
 
 
   //GENERAL
-  '/general/user': 'GeneralController.user_get_public'
+  '/general/user': 'GeneralController.user_get_public',
+
+  //AD
+  '/ad/get': 'AdController.get_ad',
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
